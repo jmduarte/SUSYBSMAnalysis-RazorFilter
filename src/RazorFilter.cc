@@ -63,6 +63,14 @@ private:
 
   double MR;
   double Rsq;
+  double Ej1;
+  double Ej2;
+  double Pxj1;
+  double Pxj2;
+  double Pyj1;
+  double Pyj2;
+  double Pzj1;
+  double Pzj2;
   double HT;
   double MET;
   int runNum;
@@ -119,6 +127,14 @@ RazorFilter::filter(edm::Event& event, const edm::EventSetup& eventSetup)
   nBJets = 0;
   MR = -1;
   Rsq = -1;
+  Ej1 = -1;
+  Ej2 = -1;
+  Pxj1 = -1;
+  Pxj2 = -1;
+  Pyj1 = -1;
+  Pyj2 = -1;
+  Pzj1 = -1;
+  Pzj2 = -1;
   MET = -1;
   HT = 0;
   runNum = -1;
@@ -183,6 +199,16 @@ RazorFilter::filter(edm::Event& event, const edm::EventSetup& eventSetup)
    MR = calcMR(ja,jb);
    Rsq  = calcRsq(MR,ja,jb,met);
 
+   // record the megjet four-momenta
+   Ej1 = ja.E();
+   Pxj1 = ja.Px();
+   Pyj1 = ja.Py();
+   Pzj1 = ja.Pz();
+   Ej2 = jb.E();
+   Pxj2 = jb.Px();
+   Pyj2 = jb.Py();
+   Pzj2 = jb.Pz();
+   
    // record the MET
    MET = (met->front()).pt();
    
@@ -193,8 +219,8 @@ RazorFilter::filter(edm::Event& event, const edm::EventSetup& eventSetup)
    // write out to csv file
    csvOut_<< event.id().run() <<","<< event.id().luminosityBlock() <<","<< event.id().event() <<","
 	  << MR << "," << Rsq << "," 
-	  << ja.E() << "," << ja.Px() << "," << ja.Py() << "," << ja.Pz() << "," 
-	  << jb.E() << "," << jb.Px() << "," << jb.Py() << "," << jb.Pz() << "," 
+	  << Ej1 << "," << Pxj1 << "," << Pyj1 << "," << Pzj1 << "," 
+	  << Ej2 << "," << Pxj2 << "," << Pyj2 << "," << Pzj2 << "," 
 	  << HT << "," << MET << "," << nJets << "," << nBJets << std::endl;
 
    // fill the tree
@@ -206,13 +232,21 @@ RazorFilter::filter(edm::Event& event, const edm::EventSetup& eventSetup)
 void 
 RazorFilter::beginJob()
 {
-  csvOut_<<"Run,Lumi,Event,MR,Rsq,E1,px1,py1,pz1,E2,px2,py2,pz2,HT,MET,nJets,nBJets"<<std::endl;
+  csvOut_<<"Run,Lumi,Event,MR,Rsq,E1,Px1,Py1,Pz1,E2,Px2,Py2,Pz2,HT,MET,nJets,nBJets"<<std::endl;
 
   razorTree_->Branch("runNum", &runNum, "runNum/I");
   razorTree_->Branch("lumiNum", &lumiNum, "lumiNum/I");
   razorTree_->Branch("eventNum", &eventNum, "eventNum/I");
   razorTree_->Branch("MR", &MR, "MR/D");
   razorTree_->Branch("Rsq", &Rsq, "Rsq/D");
+  razorTree_->Branch("Ej1", &Ej1, "Ej1/D");
+  razorTree_->Branch("Pxj1", &Pxj1, "Pxj1/D");
+  razorTree_->Branch("Pyj1", &Pyj1, "Pyj1/D");
+  razorTree_->Branch("Pzj1", &Pzj1, "Pzj1/D");
+  razorTree_->Branch("Ej2", &Ej2, "Ej2/D");
+  razorTree_->Branch("Pxj2", &Pxj2, "Pxj2/D");
+  razorTree_->Branch("Pyj2", &Pyj2, "Pyj2/D");
+  razorTree_->Branch("Pzj2", &Pzj2, "Pzj2/D");
   razorTree_->Branch("HT", &HT, "HT/D");
   razorTree_->Branch("MET", &MET, "MET/D");
   razorTree_->Branch("nJets", &nJets, "nJets/I");
