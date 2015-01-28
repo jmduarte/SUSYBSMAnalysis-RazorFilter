@@ -9,7 +9,6 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = 'GR_R_42_V25::All'
 
 readFiles = cms.untracked.vstring()
-process.source = cms.Source ("PoolSource",fileNames = readFiles)
 readFiles.extend( ['root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet/AOD/Apr21ReReco-v1/0000/002A8227-7471-E011-9632-002618943838.root',
 'root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet/AOD/Apr21ReReco-v1/0000/006C7249-7F71-E011-8764-0018F3D09614.root',
 'root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet/AOD/Apr21ReReco-v1/0000/0070F7AB-7A71-E011-971A-00304867915A.root',
@@ -2153,6 +2152,16 @@ readFiles.extend( ['root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet
 'root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet/AOD/Apr21ReReco-v1/0003/FE7AC3B3-7571-E011-B37F-001A92810A9E.root',
 'root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet/AOD/Apr21ReReco-v1/0003/FE9BF186-7B71-E011-AC16-0026189438C4.root'])
 
+# Run over the first five files 
+process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring('root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet/AOD/Apr21ReReco-v1/0000/002A8227-7471-E011-9632-002618943838.root',
+                                                                            'root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet/AOD/Apr21ReReco-v1/0000/006C7249-7F71-E011-8764-0018F3D09614.root',
+                                                                            'root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet/AOD/Apr21ReReco-v1/0000/0070F7AB-7A71-E011-971A-00304867915A.root',
+                                                                            'root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet/AOD/Apr21ReReco-v1/0000/00B077F2-8271-E011-8ED8-003048679080.root',
+                                                                            'root://eospublic.cern.ch//eos/opendata/cms/Run2010B/MultiJet/AOD/Apr21ReReco-v1/0000/00D9A6A4-7871-E011-92D3-00261894396E.root'))
+                                                                            
+
+# Or uncomment this line to run over all files (takes a long time...) 
+#process.source = cms.Source ("PoolSource",fileNames = readFiles)
 
 goodJSON = 'Cert_136033-149442_7TeV_Apr21ReReco_Collisions10_JSON_v2.txt'
 myLumis = LumiList.LumiList(filename = goodJSON).getCMSSWString().split(',')
