@@ -192,7 +192,10 @@ RazorFilter::filter(edm::Event& event, const edm::EventSetup& eventSetup)
    
    // write out to csv file
    csvOut_<< event.id().run() <<","<< event.id().luminosityBlock() <<","<< event.id().event() <<","
-	  << MR <<","<< Rsq << "," << HT << "," << MET << "," << nJets << "," << nBJets << std::endl;
+	  << MR << "," << Rsq << "," 
+	  << ja.E() << "," << ja.Px() << "," << ja.Py() << "," << ja.Pz() << "," 
+	  << jb.E() << "," << jb.Px() << "," << jb.Py() << "," << jb.Pz() << "," 
+	  << HT << "," << MET << "," << nJets << "," << nBJets << std::endl;
 
    // fill the tree
    razorTree_->Fill();
@@ -203,7 +206,7 @@ RazorFilter::filter(edm::Event& event, const edm::EventSetup& eventSetup)
 void 
 RazorFilter::beginJob()
 {
-  csvOut_<<"Run,Lumi,Event,MR,Rsq,HT,MET,nJets,nBJets"<<std::endl;
+  csvOut_<<"Run,Lumi,Event,MR,Rsq,E1,px1,py1,pz1,E2,px2,py2,pz2,HT,MET,nJets,nBJets"<<std::endl;
 
   razorTree_->Branch("runNum", &runNum, "runNum/I");
   razorTree_->Branch("lumiNum", &lumiNum, "lumiNum/I");
@@ -268,8 +271,15 @@ RazorFilter::computeHemispheres(std::auto_ptr<std::vector<math::XYZTLorentzVecto
     }
   }
 
-  hlist->push_back(j1R);
-  hlist->push_back(j2R);
+  //return the hemispheres in decreasing order of pt
+  if(j1R.Pt() > j2R.Pt()){
+    hlist->push_back(j1R);
+    hlist->push_back(j2R);
+  } else {
+    hlist->push_back(j2R);
+    hlist->push_back(j1R);
+  }
+  
   return;
 }
 
