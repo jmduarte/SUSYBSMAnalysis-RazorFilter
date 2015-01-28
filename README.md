@@ -4,9 +4,9 @@ This package is a filter that selects events from the MultiJet primary dataset f
 data release, and computes the razor variables MR and Rsq, used in
 supersymmetric particle searches. More details on the razor variables can be found in 
 http://dx.doi.org/10.1103/PhysRevD.90.112001. In particular, the event is selected
-if there are at least two "Paticle Flow" jets with pT>60 GeV and |eta|<3. A csv
+if there are at least two "Paticle Flow" jets with pT\>60 GeV and |eta|\<3. A csv
 file and a ROOT file containing MR, Rsq, the four-momenta of the two megajets, HT, MET, the number of jets, 
-and the number of b-jets (using the kinematic requirements of pT>40 GeV and |eta|<3) for each event is produced.
+and the number of b-jets (using the kinematic requirements of pT\>40 GeV and |eta|\<3) for each event is produced.
 
 See http://opendata.cern.ch for more information and for context on the instructions below.
 
